@@ -1,0 +1,22 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "gdb",
+            "request": "attach",
+            "name": "Attach to qemu gdbserver",
+            "executable": "${workspaceFolder}/os/target/riscv64gc-unknown-none-elf/debug/os",
+            "target": "localhost:1234",
+            "remote": true,
+            "cwd": "${workspaceRoot}",
+            "valuesFormatting": "parseText",
+            "gdbpath": "riscv64-unknown-elf-gdb",
+            "debugger_args": [
+                "-ex",
+                "set arch riscv:rv64",
+                "-ex",
+                "set substitute-path /rustc/fee3a459dd6aba8e34a5b99f0fbcb4218a1e2401/ /root/.rustup/toolchains/nightly-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/"
+            ],
+        }
+    ]
+}
