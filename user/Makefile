@@ -1,5 +1,5 @@
 TARGET := riscv64gc-unknown-none-elf
-MODE := debug
+MODE := $(RCORE_MODE)
 APP_DIR := src/bin
 TARGET_DIR := target/$(TARGET)/$(MODE)
 APPS := $(wildcard $(APP_DIR)/*.rs)
@@ -24,3 +24,6 @@ binary: elf
 	$(foreach elf, $(ELFS), $(OBJCOPY) $(elf) --strip-all -O binary $(patsubst $(TARGET_DIR)/%, $(TARGET_DIR)/%.bin, $(elf));)
 
 build: binary
+
+clean:
+	@cargo clean

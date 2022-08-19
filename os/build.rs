@@ -3,11 +3,17 @@ use std::io::{Result, Write};
 
 fn main() {
     println!("cargo:rerun-if-changed=../user/src/");
-    println!("cargo:rerun-if-changed={}", TARGET_PATH);
+    println!("cargo:rerun-if-changed={}", target_path());
     insert_app_data().unwrap();
 }
 
-static TARGET_PATH: &str = "../user/target/riscv64gc-unknown-none-elf/release/";
+fn target_path() -> &'static str {
+    use std::env;
+    match env::var("RCORE_MODE") {
+        Ok(ref mode) if mode == "release" => "../user/target/riscv64gc-unknown-none-elf/release/",
+        _ => "../user/target/riscv64gc-unknown-none-elf/debug/",
+    }
+}
 
 fn insert_app_data() -> Result<()> {
     let mut f = File::create("src/link_app.S").unwrap();
@@ -49,7 +55,9 @@ _num_app:
 app_{0}_start:
     .incbin "{2}{1}.bin"
 app_{0}_end:"#,
-            idx, app, TARGET_PATH
+            idx,
+            app,
+            target_path()
         )?;
     }
     Ok(())

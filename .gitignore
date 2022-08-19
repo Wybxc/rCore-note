@@ -2,3 +2,5 @@
 /user/target
 last-qemu
 last-k210
+.gdb_history
+/os/src/link_app.S

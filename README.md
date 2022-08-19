@@ -7,7 +7,6 @@
 需要将 `qemu-system-riscv64` 加入 PATH 中。
 
 ```
-cd os
 make run
 ```
 
@@ -16,7 +15,6 @@ make run
 需要将 `riscv64-unknown-elf-gdb` 加入 PATH 中。
 
 ```
-cd os
 make debug
 ```
 
