@@ -16,6 +16,7 @@ pub fn print(args: fmt::Arguments) {
     Stdout.write_fmt(args).unwrap();
 }
 
+/// 打印一个字符串。
 #[macro_export]
 macro_rules! print {
     ($fmt: literal $(, $($arg: tt)+)?) => {
@@ -23,9 +24,20 @@ macro_rules! print {
     }
 }
 
+/// 打印一个字符串并换行。
 #[macro_export]
 macro_rules! println {
     ($fmt: literal $(, $($arg: tt)+)?) => {
         $crate::std_lite::console::print(format_args!(concat!($fmt, "\n") $(, $($arg)+)?));
     }
+}
+
+/// 输出调试信息。
+#[macro_export]
+macro_rules! debug {
+    ($fmt: literal $(, $($arg: tt)+)?) => {        
+        $crate::print!(" \x1b[90m[kernel] ");
+        $crate::print!($fmt $(, $($arg)+)?);
+        $crate::println!("\x1b[0m");
+    };
 }

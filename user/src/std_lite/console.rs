@@ -1,3 +1,5 @@
+//! 控制台输出。
+
 use super::sys::*;
 use core::fmt::{self, Write};
 
@@ -12,10 +14,12 @@ impl Write for Stdout {
     }
 }
 
+/// 打印格式化字符串。
 pub fn print(args: fmt::Arguments) {
     Stdout.write_fmt(args).unwrap();
 }
 
+/// 打印一个字符串。
 #[macro_export]
 macro_rules! print {
     ($fmt: literal $(, $($arg: tt)+)?) => {
@@ -23,6 +27,7 @@ macro_rules! print {
     }
 }
 
+/// 打印一个字符串并换行。
 #[macro_export]
 macro_rules! println {
     ($fmt: literal $(, $($arg: tt)+)?) => {

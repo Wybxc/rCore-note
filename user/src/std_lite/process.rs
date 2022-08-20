@@ -1,4 +1,8 @@
+//! 应用进程相关。
+
+/// 主函数返回值类型。
 pub trait Termination {
+    /// 获取数字形式的返回值。
     fn report(self) -> i32;
 }
 
@@ -29,11 +33,11 @@ impl<T: Termination> Termination for Option<T> {
     }
 }
 
-impl<T: Termination> Termination for Result<T, i32> {
+impl<T: Termination, E: Termination> Termination for Result<T, E> {
     fn report(self) -> i32 {
         match self {
             Ok(t) => t.report(),
-            Err(e) => e,
+            Err(e) => e.report(),
         }
     }
 }

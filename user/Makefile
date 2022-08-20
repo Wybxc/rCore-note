@@ -14,11 +14,8 @@ ifeq ($(MODE), release)
 	MODE_ARG := --release
 endif
 
-elf:
-	@cargo build $(MODE_ARG)
-	@echo $(APPS)
-	@echo $(ELFS)
-	@echo $(BINS)
+elf: $(APPS)
+	@python3 build.py
 
 binary: elf
 	$(foreach elf, $(ELFS), $(OBJCOPY) $(elf) --strip-all -O binary $(patsubst $(TARGET_DIR)/%, $(TARGET_DIR)/%.bin, $(elf));)

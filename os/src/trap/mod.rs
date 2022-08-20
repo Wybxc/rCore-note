@@ -1,7 +1,7 @@
 mod context;
 
+use crate::debug;
 use crate::syscall::syscall;
-use crate::{batch::run_next_app, println};
 use core::arch::global_asm;
 use riscv::register::{
     mtvec::TrapMode,
@@ -19,6 +19,7 @@ pub fn init() {
         /// Trap 入口地址，见 `trap.S`。
         fn __alltraps();
     }
+    debug!("init trap handler");
     unsafe {
         // 设置为 Direct 模式，即只有单一的中断入口地址。
         stvec::write(__alltraps as usize, TrapMode::Direct);
@@ -36,15 +37,17 @@ pub fn trap_handler(cx: &mut TrapContext) -> &mut TrapContext {
             cx.x[10] = syscall(cx.x[17], [cx.x[10], cx.x[11], cx.x[12]]) as usize;
         }
         Trap::Exception(Exception::StoreFault) | Trap::Exception(Exception::StorePageFault) => {
-            println!("[kernel] PageFault in application, kernel killed it.");
-            run_next_app();
+            debug!("PageFault in application, kernel killed it.");
+            panic!("Cannot continue!");
+            // run_next_app();
         }
         Trap::Exception(Exception::IllegalInstruction) => {
-            println!("[kernel] IllegalInstruction in application, kernel killed it.");
-            run_next_app();
+            debug!("IllegalInstruction in application, kernel killed it.");
+            panic!("Cannot continue!");
+            // run_next_app();
         }
         _ => panic!(
-            "Unsupported trap {:?}, stval = {:#x}!",
+            "Unsupported trap {:?}, stval = {:#x}",
             scause.cause(),
             stval
         ),

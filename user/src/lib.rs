@@ -1,6 +1,12 @@
+//! 用户程序标准库。
+//! 
+//! 提供了用户程序与操作系统交互的接口，以及 `std` crate 的部分替代实现。
+
 #![feature(linkage)]
 #![feature(panic_info_message)]
 #![feature(never_type)]
+#![deny(missing_docs)]
+#![deny(warnings)]
 #![no_std]
 
 pub mod std_lite;
@@ -14,7 +20,7 @@ pub extern "C" fn _start() -> ! {
     exit(main().report());
 }
 
-use std_lite::*;
+pub use std_lite::*;
 
 fn clear_bss() {
     extern "C" {

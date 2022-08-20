@@ -44,7 +44,7 @@ __alltraps: # 从用户态陷入内核态，此时各寄存器中保存的是用
 __restore: # 从内核态返回用户态，此时各寄存器中保存的是内核态的值
     # case1: start running app by __restore
     # case2: back to U after handling trap
-    mv sp, a0
+    # mv sp, a0
     # now sp->kernel stack(after allocated), sscratch->user stack
     # restore sstatus/sepc
     ld t0, 32*8(sp)

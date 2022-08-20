@@ -2,6 +2,10 @@ run: export RCORE_MODE=release
 run:
 	@cd os && make run
 
+run-debug: export RCORE_MODE=debug
+run-debug:
+	@cd os && make run
+
 debug:export RCORE_MODE=debug
 debug:
 	@cd os && make debug

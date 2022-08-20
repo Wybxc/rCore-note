@@ -2,3 +2,6 @@
 pub mod console;
 pub mod sync;
 mod lang_items;
+
+pub use console::*;
+pub use sync::*;

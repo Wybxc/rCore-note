@@ -3,7 +3,7 @@ use riscv::register::sstatus::{self, Sstatus, SPP};
 
 /// 陷入上下文。
 ///
-/// 发生陷入时，用户态的上下文保存在此结构中。
+/// 发生陷入时，**用户态** 的上下文保存在此结构中。
 #[repr(C)]
 pub struct TrapContext {
     /// 寄存器的值。
@@ -25,7 +25,7 @@ impl TrapContext {
     /// # Arguments
     /// - `entry`: 用户程序的入口地址。
     /// - `sp`: 用户程序的栈顶地址。
-    pub fn new_app_init(entry: usize, sp: usize) -> Self {
+    pub fn new(entry: usize, sp: usize) -> Self {
         let mut sstatus = sstatus::read(); // CSR sstatus
         sstatus.set_spp(SPP::User); //previous privilege mode: user mode
         let mut cx = Self {

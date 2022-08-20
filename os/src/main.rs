@@ -1,15 +1,21 @@
+//! # rCore-note
+//!
+//! 基于 rCore 编写的学习用操作系统。
+
 #![feature(panic_info_message)]
 #![feature(const_trait_impl)]
 #![feature(never_type)]
+#![deny(missing_docs)]
+#![deny(warnings)]
 #![no_std]
 #![no_main]
 
 #[macro_use]
 mod std_lite;
+mod loader;
 mod sbi;
-
-mod batch;
 mod syscall;
+mod task;
 mod trap;
 
 use core::arch::global_asm;
@@ -21,9 +27,10 @@ global_asm!(include_str!("link_app.S"));
 #[no_mangle]
 pub fn rust_main() {
     clear_bss();
+    debug!("rCore OS start!");
     trap::init();
-    batch::init();
-    batch::run_next_app();
+    loader::load_apps();
+    task::run_first_task();
 }
 
 /// 清空 bss 段。
