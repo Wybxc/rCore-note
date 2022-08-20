@@ -16,6 +16,7 @@ mod loader;
 mod sbi;
 mod syscall;
 mod task;
+mod timer;
 mod trap;
 
 use core::arch::global_asm;
@@ -27,9 +28,11 @@ global_asm!(include_str!("link_app.S"));
 #[no_mangle]
 pub fn rust_main() {
     clear_bss();
-    debug!("rCore OS start!");
+    info!("rCore OS start!");
     trap::init();
     loader::load_apps();
+    trap::enable_timer_interrupt();
+    timer::set_next_trigger();
     task::run_first_task();
 }
 

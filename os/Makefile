@@ -10,6 +10,11 @@ ifeq ($(MODE), release)
 	MODE_ARG := --release
 endif
 
+# Debug verbose argument
+ifdef RCORE_DEBUG_VERBOSE
+	DEBUG_VERBOSE_ARG := --features=debug-output
+endif
+
 # BOARD
 BOARD ?= qemu
 SBI ?= rustsbi
@@ -56,7 +61,7 @@ kernel:
 	@cd ../user && make build
 	@echo Platform: $(BOARD)
 	@cp src/linker-$(BOARD).ld src/linker.ld
-	@cargo build $(MODE_ARG)
+	@cargo build $(MODE_ARG) $(DEBUG_VERBOSE_ARG)
 	@rm src/linker.ld
 
 

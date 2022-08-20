@@ -1,5 +1,4 @@
-/os/target
-/user/target
+/*/target
 last-qemu
 last-k210
 .gdb_history

@@ -33,9 +33,29 @@ macro_rules! println {
 }
 
 /// 输出调试信息。
+#[cfg(feature = "debug-output")]
 #[macro_export]
 macro_rules! debug {
-    ($fmt: literal $(, $($arg: tt)+)?) => {        
+    ($fmt: literal $(, $($arg: tt)+)?) => {
+        $crate::print!(" \x1b[90m[kernel] ");
+        $crate::print!($fmt $(, $($arg)+)?);
+        $crate::println!("\x1b[0m");
+    };
+}
+
+/// 输出调试信息。
+#[cfg(not(feature = "debug-output"))]
+#[macro_export]
+macro_rules! debug {
+    ($fmt: literal $(, $($arg: tt)+)?) => {
+        let _ = format_args!(concat!($fmt, "\n") $(, $($arg)+)?);
+    };
+}
+
+/// 输出日志信息。
+#[macro_export]
+macro_rules! info {
+    ($fmt: literal $(, $($arg: tt)+)?) => {
         $crate::print!(" \x1b[90m[kernel] ");
         $crate::print!($fmt $(, $($arg)+)?);
         $crate::println!("\x1b[0m");

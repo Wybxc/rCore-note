@@ -1,3 +1,7 @@
+ifdef VERBOSE
+	export RCORE_DEBUG_VERBOSE=1
+endif
+
 run: export RCORE_MODE=release
 run:
 	@cd os && make run
